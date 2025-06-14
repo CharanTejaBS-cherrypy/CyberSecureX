@@ -15,19 +15,19 @@ from .utils.lan_scan import scan_lan
 
 app = FastAPI()
 from pathlib import Path
-# Base directory relative to this file
-base_dir = Path(__file__).parent
 
-# Static files
+base_dir = Path(__file__).resolve().parent
 static_dir = base_dir / "static"
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+upload_dir = base_dir / "uploads"
+templates_dir = base_dir / "templates"
 
-# Uploads
-uploads_dir = base_dir / "uploads"
-app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+if upload_dir.exists():
+    app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
 
-# Templates
-templates = Jinja2Templates(directory=base_dir / "templates")
+templates = Jinja2Templates(directory=templates_dir)
+
 
 # ------------------- DB Init -------------------
 
