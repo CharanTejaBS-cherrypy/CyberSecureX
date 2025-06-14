@@ -3,3 +3,5 @@ uvicorn
 jinja2
 httpx
 aiohttp
+python-multipart
+
