@@ -1,4 +1,57 @@
-<form method="post">
-  Password (if any): <input type="text" name="password" /><br />
-  <button type="submit">Download</button>
+<form method="post" class="download-form">
+  <label for="password">🔒 Password (if any):</label>
+  <input type="text" name="password" id="password" placeholder="Enter password if required" />
+  <button type="submit">⬇️ Download File</button>
 </form>
+
+<style>
+  .download-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 400px;
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    background: #0a0a0a;
+    box-shadow: 0 0 15px #0ff;
+  }
+
+  .download-form label {
+    color: #0ff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .download-form input[type="text"] {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #111;
+    color: #0ff;
+    width: 100%;
+    margin-bottom: 20px;
+    outline: none;
+  }
+
+  .download-form input[type="text"]::placeholder {
+    color: #555;
+  }
+
+  .download-form button {
+    padding: 10px 20px;
+    background: #0ff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .download-form button:hover {
+    background: #00c8c8;
+  }
+</style>
