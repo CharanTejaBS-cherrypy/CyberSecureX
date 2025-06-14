@@ -88,11 +88,13 @@
               {% if link.expired %}Expired{% else %}Active{% endif %}
             </span>
             <button
-              onclick="copyLink('{{ request.url.scheme }}://{{ request.url.hostname }}:{{ request.url.port }}/file/{{ link.token }}')"
-              class="copy-button"
-            >
-              <i class="ti ti-copy"></i> Copy Link
-            </button>
+  onclick="copyLink('{{ request.base_url.rstrip('/') }}/file/{{ link.token }}
+')"
+  class="copy-button"
+>
+  <i class="ti ti-copy"></i> Copy Link
+</button>
+
           </div>
         </div>
         {% endfor %}
