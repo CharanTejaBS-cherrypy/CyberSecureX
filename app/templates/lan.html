@@ -1,0 +1,254 @@
+{% extends "base.html" %} {% block content %}
+<div class="lan-container">
+  <h2><i class="ti ti-network"></i> LAN Device Discovery</h2>
+
+  <button id="lanButton" onclick="scanLAN()" class="cyber-button">
+    <i class="ti ti-radar"></i> Scan LAN
+  </button>
+
+  <p id="status" class="scan-status"></p>
+
+  <div id="lanResult" class="scan-results"></div>
+</div>
+
+<style>
+  /* LAN Container */
+  .lan-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    color: var(--accent-cyan);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Scan Button */
+  .cyber-button {
+    background: linear-gradient(135deg, var(--accent-cyan), #0084ff);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cyber-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 240, 255, 0.3);
+  }
+
+  .cyber-button:disabled {
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Status Indicator */
+  .scan-status {
+    min-height: 1.5rem;
+    color: var(--accent-cyan);
+    font-family: "Roboto Mono", monospace;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Results Section */
+  .scan-results {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    margin-top: 1rem;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .scan-results h3 {
+    margin-top: 0;
+    color: var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+  }
+
+  th {
+    background: rgba(0, 240, 255, 0.05);
+    color: var(--accent-cyan);
+  }
+
+  tr:nth-child(even) {
+    background: rgba(0, 240, 255, 0.02);
+  }
+
+  tr:hover {
+    background: rgba(0, 240, 255, 0.05);
+  }
+
+  /* Port Indicators */
+  .port-highlight {
+    color: var(--accent-green);
+    font-weight: bold;
+  }
+
+  .error-message {
+    color: var(--danger);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .lan-container {
+      padding: 1.5rem;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+
+<script>
+  const portNames = {
+    20: "FTP-Data",
+    21: "FTP",
+    22: "SSH",
+    23: "Telnet",
+    25: "SMTP",
+    53: "DNS",
+    80: "HTTP",
+    110: "POP3",
+    139: "NetBIOS",
+    143: "IMAP",
+    443: "HTTPS",
+    445: "SMB",
+    3306: "MySQL",
+    3389: "RDP",
+    8080: "HTTP-Alt",
+    // Add more if you like
+  };
+
+  function formatPorts(portArray) {
+    if (!portArray || portArray.length === 0) return "None";
+    return portArray
+      .map((port) => {
+        const portName = portNames[port] || "Unknown";
+        return `<span class="port-highlight">${port}</span> (${portName})`;
+      })
+      .join(", ");
+  }
+
+  async function scanLAN() {
+    const button = document.getElementById("lanButton");
+    const status = document.getElementById("status");
+    const resultDiv = document.getElementById("lanResult");
+
+    button.disabled = true;
+    status.innerHTML = '<i class="ti ti-radar"></i> Scanning your LAN...';
+    resultDiv.innerHTML = "";
+
+    try {
+      const res = await fetch("/scan-lan");
+      const data = await res.json();
+
+      console.log(data); // Debug log
+
+      let html = "";
+
+      // Local device info
+      if (data.local_device) {
+        const local = data.local_device;
+        html += `<h3><i class="ti ti-device-laptop"></i> Local Machine Details:</h3>
+                <table>
+                  <tr>
+                    <th>IP</th>
+                    <th>Hostname</th>
+                    <th>MAC Address</th>
+                    <th>Open Ports</th>
+                  </tr>
+                  <tr>
+                    <td>${local.ip}</td>
+                    <td>${local.hostname}</td>
+                    <td>${local.mac}</td>
+                    <td>${formatPorts(local.open_ports)}</td>
+                  </tr>
+                </table><br>`;
+      }
+
+      // Discovered devices
+      if (data.devices && data.devices.length > 0) {
+        html += `<h3><i class="ti ti-devices"></i> Discovered Devices:</h3>
+                <table>
+                  <tr>
+                    <th>IP</th>
+                    <th>Hostname</th>
+                    <th>MAC Address</th>
+                    <th>Open Ports</th>
+                  </tr>`;
+
+        data.devices.forEach((device) => {
+          html += `<tr>
+                    <td>${device.ip}</td>
+                    <td>${device.hostname}</td>
+                    <td>${device.mac}</td>
+                    <td>${formatPorts(device.open_ports)}</td>
+                  </tr>`;
+        });
+
+        html += `</table>`;
+      } else if (data.error) {
+        html += `<p class="error-message"><i class="ti ti-alert-circle"></i> Error: ${data.error}</p>`;
+      } else {
+        html += `<p><i class="ti ti-mood-sad"></i> No active devices found.</p>`;
+      }
+
+      resultDiv.innerHTML = html;
+    } catch (err) {
+      console.error(err);
+      resultDiv.innerHTML = `<p class="error-message"><i class="ti ti-alert-circle"></i> Error scanning LAN.</p>`;
+    }
+
+    status.innerHTML = '<i class="ti ti-check"></i> Scan completed';
+    button.disabled = false;
+  }
+</script>
+{% endblock %}

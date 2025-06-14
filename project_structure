@@ -1,0 +1,23 @@
+CyberSecureX/
+├── app/
+│   ├── __init__.py
+│   ├── main.py                # your FastAPI app startup
+│   ├── database.py            # SQLite DB init + functions
+│   ├── utils/
+│   │   ├── scanner.py         # website vulnerability scanner logic
+│   │   ├── lan_scan.py        # LAN device discovery logic
+│   │   ├── password_checker.py# password strength & pwned check
+│   │   └── file_share.py      # file sharing logic
+│   ├── static/
+│   │   └── (css, js, images, icons if any)
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── scanner.html
+│   │   ├── lan.html
+│   │   ├── password.html
+│   │   ├── secure_share.html
+│   │   └── download_form.html
+│   └── uploads/               # uploaded files storage
+├── requirements.txt
+└── run.py                     # entry point to run uvicorn

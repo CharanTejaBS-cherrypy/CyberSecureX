@@ -1,0 +1,304 @@
+{% extends "base.html" %} {% block content %}
+<div class="cyber-home">
+  <!-- Terminal Panel -->
+  <section class="terminal-panel">
+    <div class="terminal-header">
+      <span class="red-dot"></span>
+      <span class="yellow-dot"></span>
+      <span class="green-dot"></span>
+      <span>security@cybersecurex:~</span>
+    </div>
+    <div class="terminal-body" id="typewriter">
+      > Welcome to CyberSecureX<br />
+      > Type <span class="accent-cyan">'help'</span> for commands<br />
+      > System last updated: Today<br />
+      > Firewall: <span class="accent-green">ACTIVE</span>
+    </div>
+  </section>
+
+  <!-- Cyber Awareness Tips -->
+  <section class="cyber-tips">
+    <h3><i class="ti ti-shield-lock"></i> Essential Security Practices</h3>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <i class="ti ti-password"></i>
+        <h4>Strong Passwords</h4>
+        <p>
+          Use 14+ character passwords with a mix of letters, numbers, and
+          symbols.
+        </p>
+      </div>
+      <div class="tip-card">
+        <i class="ti ti-brand-apple"></i>
+        <h4>Software Updates</h4>
+        <p>
+          Patch systems weekly. 60% of breaches exploit known vulnerabilities.
+        </p>
+      </div>
+      <div class="tip-card">
+        <i class="ti ti-device-desktop"></i>
+        <h4>Network Hygiene</h4>
+        <p>Change default router passwords. Disable WPS and UPnP if unused.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cybersecurity News Snippets -->
+  <section class="cyber-news">
+    <h3><i class="ti ti-news"></i> Today's Security Bulletin</h3>
+    <div class="news-item">
+      <span class="news-date">JUN 2024</span>
+      <h4>Critical Linux Kernel Vulnerability</h4>
+      <p>
+        CVE-2024-1086 allows privilege escalation in kernel versions before
+        5.15. Patch immediately.
+      </p>
+    </div>
+    <div class="news-item">
+      <span class="news-date">MAY 2024</span>
+      <h4>Phishing Campaign Targets GitHub</h4>
+      <p>
+        Fake repository invites steal OAuth tokens. Verify sender emails
+        carefully.
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- Background Animation -->
+<div class="bg-animation">
+  <div class="network-node"></div>
+  <div class="network-node"></div>
+  <div class="network-node"></div>
+</div>
+
+<style>
+  /* Simplified Cyber Home */
+  .cyber-home {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  /* Terminal Panel */
+  .terminal-panel {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    margin-bottom: 3rem;
+    overflow: hidden;
+    font-family: "Roboto Mono", monospace;
+  }
+
+  .terminal-header {
+    background: #161b22;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  }
+
+  .terminal-header span:last-child {
+    margin-left: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .red-dot,
+  .yellow-dot,
+  .green-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .red-dot {
+    background: #ff5f56;
+  }
+  .yellow-dot {
+    background: #ffbd2e;
+  }
+  .green-dot {
+    background: #27c93f;
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+    color: var(--accent-green);
+    line-height: 1.7;
+    min-height: 150px;
+  }
+
+  /* Cyber Tips */
+  .cyber-tips {
+    margin-bottom: 3rem;
+  }
+
+  .cyber-tips h3 {
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .tip-card {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 3px solid var(--accent-cyan);
+  }
+
+  .tip-card i {
+    font-size: 1.5rem;
+    color: var(--accent-cyan);
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .tip-card h4 {
+    margin: 0.5rem 0;
+    color: var(--accent-cyan);
+  }
+
+  .tip-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* Cyber News */
+  .cyber-news h3 {
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .news-item {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .news-date {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+  }
+
+  .news-item h4 {
+    margin: 0 0 0.5rem;
+    color: var(--accent-cyan);
+    max-width: 80%;
+  }
+
+  .news-item p {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  /* Background Animation */
+  .bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .network-node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 240, 255, 0.1);
+    border-radius: 50%;
+  }
+
+  .network-node:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation: pulse 4s infinite ease-in-out;
+  }
+
+  .network-node:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation: pulse 5s infinite ease-in-out 1s;
+  }
+
+  .network-node:nth-child(3) {
+    top: 80%;
+    left: 30%;
+    animation: pulse 6s infinite ease-in-out 2s;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .tips-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .news-date {
+      position: static;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .news-item h4 {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Typewriter effect for terminal
+  document.addEventListener("DOMContentLoaded", () => {
+    const terminal = document.getElementById("typewriter");
+    const phrases = [
+      "> Scanning network interfaces...",
+      "> Firewall status: ACTIVE",
+      "> No critical threats detected",
+      "> Last login: 2 seconds ago",
+      "> System integrity: 100%",
+    ];
+    let currentPhrase = 0;
+
+    function typeWriter() {
+      terminal.innerHTML = phrases[currentPhrase];
+      currentPhrase = (currentPhrase + 1) % phrases.length;
+      setTimeout(typeWriter, 3000);
+    }
+
+    // Start after delay
+    setTimeout(typeWriter, 2000);
+  });
+</script>
+{% endblock %}

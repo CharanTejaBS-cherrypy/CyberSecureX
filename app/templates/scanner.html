@@ -1,0 +1,261 @@
+{% extends "base.html" %} {% block content %}
+<div class="scanner-container">
+  <h2><i class="ti ti-scan"></i> Website Vulnerability Scanner</h2>
+
+  <form id="scanForm" class="cyber-form">
+    <div class="input-group">
+      <input
+        type="text"
+        id="target"
+        placeholder="example.com"
+        required
+        class="cyber-input"
+      />
+      <button
+        type="button"
+        id="scanButton"
+        onclick="scan()"
+        class="cyber-button"
+      >
+        <i class="ti ti-search"></i> Scan
+      </button>
+    </div>
+  </form>
+
+  <p id="status" class="scan-status"></p>
+
+  <div id="result" class="scan-results"></div>
+</div>
+
+<style>
+  /* Scanner Container */
+  .scanner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    color: var(--accent-cyan);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Form Styles */
+  .cyber-form {
+    margin-bottom: 1.5rem;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .cyber-input {
+    flex: 1;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-family: "Roboto Mono", monospace;
+    transition: all 0.3s ease;
+  }
+
+  .cyber-input:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1);
+  }
+
+  .cyber-button {
+    background: linear-gradient(135deg, var(--accent-cyan), #0084ff);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 6px;
+    padding: 0 1.5rem;
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cyber-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 240, 255, 0.3);
+  }
+
+  .cyber-button:disabled {
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Status Indicator */
+  .scan-status {
+    min-height: 1.5rem;
+    color: var(--accent-cyan);
+    font-family: "Roboto Mono", monospace;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .scan-status:before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    margin-right: 0.5rem;
+  }
+
+  /* Results Section */
+  .scan-results {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .scan-results h3 {
+    margin-top: 0;
+    color: var(--accent-cyan);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    padding-bottom: 0.5rem;
+  }
+
+  .scan-results h4 {
+    margin: 1.5rem 0 0.5rem;
+    color: var(--accent-green);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+  }
+
+  th {
+    background: rgba(0, 240, 255, 0.05);
+    color: var(--accent-cyan);
+  }
+
+  tr:nth-child(even) {
+    background: rgba(0, 240, 255, 0.02);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .scanner-container {
+      padding: 1.5rem;
+    }
+
+    .input-group {
+      flex-direction: column;
+    }
+
+    .cyber-button {
+      justify-content: center;
+      padding: 0.75rem;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+
+<script>
+  async function scan() {
+    const target = document.getElementById("target").value;
+    if (!target) {
+      alert("Please enter a target domain.");
+      return;
+    }
+
+    const button = document.getElementById("scanButton");
+    const status = document.getElementById("status");
+    const resultDiv = document.getElementById("result");
+
+    // Reset UI
+    button.disabled = true;
+    button.innerHTML = '<i class="ti ti-loader"></i> Scanning...';
+    status.innerHTML = '<i class="ti ti-radar"></i> Scanning in progress...';
+    resultDiv.innerHTML = "";
+
+    try {
+      const res = await fetch("/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ target }),
+      });
+
+      const data = await res.json();
+
+      let html = `<h3>Scan Report for: <span class="accent-cyan">${data.target}</span></h3>`;
+      html += `<table>
+                <tr><td>IP Address</td><td>${data.ip_address}</td></tr>
+                <tr><td>HTTPS Valid</td><td class="${
+                  data.https_valid ? "valid" : "invalid"
+                }">${data.https_valid ? "✅ Valid" : "❌ Invalid"}</td></tr>
+                <tr><td>Errors</td><td>${
+                  data.errors.length > 0 ? data.errors.join("<br>") : "None"
+                }</td></tr>
+              </table>`;
+
+      html += `<h4><i class="ti ti-server"></i> HTTP Headers:</h4>`;
+      if (Object.keys(data.http_headers).length > 0) {
+        html += `<table>
+                  <tr><th>Header</th><th>Value</th></tr>`;
+        for (const key in data.http_headers) {
+          html += `<tr><td>${key}</td><td>${data.http_headers[key]}</td></tr>`;
+        }
+        html += `</table>`;
+      } else {
+        html += `<p>No HTTP headers found.</p>`;
+      }
+
+      resultDiv.innerHTML = html;
+    } catch (err) {
+      resultDiv.innerHTML =
+        '<p class="error"><i class="ti ti-alert-circle"></i> Error scanning site.</p>';
+    }
+
+    status.innerHTML = '<i class="ti ti-check"></i> Scan completed';
+    button.disabled = false;
+    button.innerHTML = '<i class="ti ti-search"></i> Scan';
+  }
+</script>
+{% endblock %}

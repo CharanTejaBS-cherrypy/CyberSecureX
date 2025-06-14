@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CyberSecureX</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600&family=Inter:wght@400;500&family=Roboto+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tabler Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
+    <style>
+      :root {
+        --bg-primary: #0d1117;
+        --bg-secondary: #161b22;
+        --accent-cyan: #00f0ff;
+        --accent-green: #7fff00;
+        --warning: #ff5f1f;
+        --danger: #ff0033;
+        --text-primary: #e6edf3;
+        --text-secondary: #8b949e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        color: var(--accent-cyan);
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        text-align: center;
+        margin: 1rem 0;
+        letter-spacing: 1px;
+      }
+
+      /* Mobile-first navigation */
+      nav {
+        background-color: var(--bg-secondary);
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+        position: relative;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+
+      .nav-links.expanded {
+        max-height: 500px; /* Adjust based on content */
+      }
+
+      nav a {
+        color: var(--text-primary);
+        text-decoration: none;
+        padding: 0.5rem;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: color 0.3s;
+        width: 100%;
+        text-align: center;
+      }
+
+      nav a:hover {
+        color: var(--accent-cyan);
+      }
+
+      .active {
+        position: relative;
+      }
+
+      .active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        height: 2px;
+        background: var(--accent-cyan);
+        box-shadow: 0 0 8px var(--accent-cyan);
+      }
+
+      .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--accent-cyan);
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin: 0 auto;
+      }
+
+      hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-cyan),
+          transparent
+        );
+        margin: 0.5rem 0;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 1rem auto;
+        padding: 0 1rem;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 1rem;
+        font-family: "Roboto Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        border-top: 1px solid rgba(0, 240, 255, 0.1);
+        margin-top: 2rem;
+      }
+
+      /* Desktop styles (768px and up) */
+      @media (min-width: 768px) {
+        .menu-toggle {
+          display: none;
+        }
+
+        .nav-links {
+          flex-direction: row;
+          justify-content: center;
+          max-height: none;
+          overflow: visible;
+          gap: 1.5rem;
+        }
+
+        nav a {
+          width: auto;
+          padding: 0.5rem 1rem;
+        }
+
+        .active::after {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        <i class="ti ti-shield-lock"></i> CyberSecure<span
+          style="color: var(--accent-green)"
+          >X</span
+        >
+      </h1>
+      <nav>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <a href="/" class="{% if request.path == '/' %}active{% endif %}">
+            <i class="ti ti-home"></i> Home
+          </a>
+          <a
+            href="/scanner"
+            class="{% if request.path == '/scanner' %}active{% endif %}"
+          >
+            <i class="ti ti-scan"></i> Scanner
+          </a>
+          <a
+            href="/password-checker"
+            class="{% if request.path == '/password-checker' %}active{% endif %}"
+          >
+            <i class="ti ti-key"></i> Password
+          </a>
+          <a
+            href="/lan"
+            class="{% if request.path == '/lan' %}active{% endif %}"
+          >
+            <i class="ti ti-network"></i> LAN
+          </a>
+          <a
+            href="/secure-share"
+            class="{% if request.path == '/secure-share' %}active{% endif %}"
+          >
+            <i class="ti ti-share"></i> Share
+          </a>
+        </div>
+      </nav>
+      <hr />
+      {% block content %}{% endblock %}
+    </div>
+    <footer>[root@cybersecurex ~]$ <span id="terminal-cursor">_</span></footer>
+
+    <script>
+      // Mobile menu toggle
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("expanded");
+      });
+
+      // Close menu when a link is clicked (for mobile)
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth < 768) {
+            navLinks.classList.remove("expanded");
+          }
+        });
+      });
+
+      // Terminal cursor animation
+      const cursor = document.getElementById("terminal-cursor");
+      setInterval(() => {
+        cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
+      }, 500);
+    </script>
+  </body>
+</html>
